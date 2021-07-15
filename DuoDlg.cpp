@@ -36,6 +36,8 @@ public:
 // Implementation
 protected:
 	DECLARE_MESSAGE_MAP()
+public:
+	afx_msg void OnCbnSelchangeCombo2();
 };
 
 CAboutDlg::CAboutDlg() : CDialogEx(IDD_ABOUTBOX)
@@ -48,6 +50,7 @@ void CAboutDlg::DoDataExchange(CDataExchange* pDX)
 }
 
 BEGIN_MESSAGE_MAP(CAboutDlg, CDialogEx)
+	ON_CBN_SELCHANGE(IDC_COMBO2, &CAboutDlg::OnCbnSelchangeCombo2)
 END_MESSAGE_MAP()
 
 
@@ -60,6 +63,7 @@ CDuoDlg::CDuoDlg(CWnd* pParent /*=nullptr*/)
 	, m_antalspelbara(0)
 	, m_chans(0)
 	, m_kvot(0)
+	, m_spelbarakombinationer(_T(""))
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 }
@@ -70,6 +74,7 @@ void CDuoDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_EDIT1, m_antalspelbara);
 	DDX_Text(pDX, IDC_EDIT2, m_chans);
 	DDX_Text(pDX, IDC_EDIT3, m_kvot);
+	DDX_CBString(pDX, IDC_COMBO1, m_spelbarakombinationer);
 }
 
 BEGIN_MESSAGE_MAP(CDuoDlg, CDialogEx)
@@ -205,7 +210,15 @@ void CDuoDlg::kalkylera_nominella_odds()
 
 void CDuoDlg::kalkylera_vinnande()
 {
+	char buffer[12];
+	CString tempstring;
+	int length;
+	int indexx = -1;
 	UpdateData(true);
+	CComboBox* pLC2 = (CComboBox*)GetDlgItem(IDC_COMBO2);
+	//pLC2->SetCurSel(0);
+//	pLC2->InsertString(-1, "init");
+	UpdateData(false);
 	for (int a = 0; a < 20; a++)
 	{
 		for (int b = 0; b < 20; b++)
@@ -221,6 +234,27 @@ void CDuoDlg::kalkylera_vinnande()
 					m_antalspelbara++;
 					temp = 1 / t1;
 					m_chans = m_chans + temp;
+					tempstring = "";
+#pragma warning(suppress : 4996)
+					tempstring = itoa(a, buffer, 10);
+					tempstring += "-";
+#pragma warning(suppress : 4996)
+					tempstring += itoa(b, buffer, 10);
+					tempstring += "   ";
+#pragma warning(suppress : 4996)
+					tempstring += itoa(t1, buffer, 10);
+					tempstring += "   ";
+#pragma warning(suppress : 4996)
+					tempstring += itoa(t2, buffer, 10);
+				
+				//	m_spelbarakombinationer.Append(tempstring);
+					
+					length = m_spelbarakombinationer.GetLength();
+				//	m_spelbarakombinationer.Insert(length, tempstring);
+					indexx++;
+					int count = pLC2->GetCount();
+					pLC2->InsertString(-1,tempstring);
+					pLC2->Invalidate(true);
 					UpdateData(false);
 				}
 			}
@@ -432,7 +466,7 @@ void CDuoDlg::OnBnClickedButton2()
 	CStdioFile* pFile;
 	char buffer[15000];
 	int status;
-	sprintf_s(sUrlOrg, "https://api.spela.svenskaspel.se/racing/1/race/12153/quinellaodds?");
+	sprintf_s(sUrlOrg, "https://api.spela.svenskaspel.se/racing/1/race/12157/quinellaodds?");
 	pFile = m_Session.OpenURL(sUrlOrg, 1, INTERNET_FLAG_DONT_CACHE | INTERNET_FLAG_EXISTING_CONNECT | INTERNET_FLAG_TRANSFER_ASCII);
 	pFile->ReadString(buffer, 14099);
 	status = 0;
@@ -533,4 +567,12 @@ void CDuoDlg::OnBnClickedButton2()
 	int a;
 	a = 0;
 	kalkylera_vinnande();
+	//m_spelbarakombinationer.Append("test");
+	//UpdateData(false);
+}
+
+
+void CAboutDlg::OnCbnSelchangeCombo2()
+{
+	// TODO: Add your control notification handler code here
 }

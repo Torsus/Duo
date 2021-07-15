@@ -44,4 +44,5 @@ public:
 	int m_antalspelbara;
 	float m_chans;
 	float m_kvot;
+	CString m_spelbarakombinationer;
 };
