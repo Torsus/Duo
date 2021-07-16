@@ -45,4 +45,5 @@ public:
 	float m_chans;
 	float m_kvot;
 	CString m_spelbarakombinationer;
+	int m_loppid;
 };

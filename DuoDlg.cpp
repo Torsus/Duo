@@ -64,6 +64,7 @@ CDuoDlg::CDuoDlg(CWnd* pParent /*=nullptr*/)
 	, m_chans(0)
 	, m_kvot(0)
 	, m_spelbarakombinationer(_T(""))
+	, m_loppid(0)
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 }
@@ -75,6 +76,7 @@ void CDuoDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_EDIT2, m_chans);
 	DDX_Text(pDX, IDC_EDIT3, m_kvot);
 	DDX_CBString(pDX, IDC_COMBO1, m_spelbarakombinationer);
+	DDX_Text(pDX, IDC_EDIT4, m_loppid);
 }
 
 BEGIN_MESSAGE_MAP(CDuoDlg, CDialogEx)
@@ -232,8 +234,9 @@ void CDuoDlg::kalkylera_vinnande()
 					t1 = duoodds_nominella[a][b];
 					t2 = duoodds_spelade[a][b];
 					m_antalspelbara++;
-					temp = 1 / t1;
+					temp = 1 / (float)t1;
 					m_chans = m_chans + temp;
+					UpdateData(false);
 					tempstring = "";
 #pragma warning(suppress : 4996)
 					tempstring = itoa(a, buffer, 10);
@@ -271,9 +274,9 @@ void CDuoDlg::OnBnClickedButton1()
 	char buffer[500000];
 	FILE* str;
 	int status;
-
+	UpdateData(true);
 	//sprintf_s(sUrlOrg, "view-source:https://spela.svenskaspel.se/trav-och-galopp/spela/cabourg/lopp-3/vinnare/2021-07-13");
-	//sprintf_s(sUrlOrg, "https://api.spela.svenskaspel.se/racing/1/race/12153/quinellaodds?");
+	//sprintf_s(sUrlOrg, "https://api.spela.svenskaspel.se/racing/1/race/12141/quinellaodds?");
 	//pFile = m_Session.OpenURL(sUrlOrg, 1, INTERNET_FLAG_DONT_CACHE | INTERNET_FLAG_EXISTING_CONNECT  | INTERNET_FLAG_TRANSFER_ASCII);
 	//pFile->ReadString(buffer, 24099);
 	int err;
@@ -455,6 +458,7 @@ void CDuoDlg::OnBnClickedButton1()
 	int a;
 	a = 1;
 	kalkylera_nominella_odds();
+	//UpdateData(false);
 }
 
 
@@ -466,7 +470,10 @@ void CDuoDlg::OnBnClickedButton2()
 	CStdioFile* pFile;
 	char buffer[15000];
 	int status;
-	sprintf_s(sUrlOrg, "https://api.spela.svenskaspel.se/racing/1/race/12157/quinellaodds?");
+	UpdateData(true);
+	sprintf_s(sUrlOrg, "https://api.spela.svenskaspel.se/racing/1/race/%d/quinellaodds?",m_loppid);
+
+	//sprintf_s(sUrlOrg, "https://api.spela.svenskaspel.se/racing/1/race/12163/quinellaodds?");
 	pFile = m_Session.OpenURL(sUrlOrg, 1, INTERNET_FLAG_DONT_CACHE | INTERNET_FLAG_EXISTING_CONNECT | INTERNET_FLAG_TRANSFER_ASCII);
 	pFile->ReadString(buffer, 14099);
 	status = 0;
