@@ -41,9 +41,11 @@ public:
 	afx_msg void kalkylera_nominella_odds();
 	afx_msg void kakylera_nominellt_odds(int a, int b);
 	afx_msg void kalkylera_vinnande();
+	afx_msg void kalkylera_aterbetalning();
 	int m_antalspelbara;
 	float m_chans;
 	float m_kvot;
 	CString m_spelbarakombinationer;
 	int m_loppid;
+	double m_ater;
 };

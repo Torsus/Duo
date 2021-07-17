@@ -65,6 +65,7 @@ CDuoDlg::CDuoDlg(CWnd* pParent /*=nullptr*/)
 	, m_kvot(0)
 	, m_spelbarakombinationer(_T(""))
 	, m_loppid(0)
+	, m_ater(0)
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 }
@@ -77,6 +78,7 @@ void CDuoDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_EDIT3, m_kvot);
 	DDX_CBString(pDX, IDC_COMBO1, m_spelbarakombinationer);
 	DDX_Text(pDX, IDC_EDIT4, m_loppid);
+	DDX_Text(pDX, IDC_EDIT5, m_ater);
 }
 
 BEGIN_MESSAGE_MAP(CDuoDlg, CDialogEx)
@@ -263,6 +265,22 @@ void CDuoDlg::kalkylera_vinnande()
 			}
 		}
 	}
+}
+
+void CDuoDlg::kalkylera_aterbetalning()
+{
+	double ater;
+	ater = 0;
+	for (int a = 0; a < 20; a++) {
+		for (int b = 0; b < 20; b++) {
+			if (duoodds_spelade[a][b] != 0) {
+				ater += 1/duoodds_spelade[a][b];
+			}
+		}
+	}
+
+	m_ater = 1/ater;
+	UpdateData(false);
 }
 
 void CDuoDlg::OnBnClickedButton1()
@@ -468,14 +486,14 @@ void CDuoDlg::OnBnClickedButton2()
 	char  sUrlOrg[300];
 	CInternetSession m_Session;
 	CStdioFile* pFile;
-	char buffer[15000];
+	char buffer[25000];
 	int status;
 	UpdateData(true);
 	sprintf_s(sUrlOrg, "https://api.spela.svenskaspel.se/racing/1/race/%d/quinellaodds?",m_loppid);
 
 	//sprintf_s(sUrlOrg, "https://api.spela.svenskaspel.se/racing/1/race/12163/quinellaodds?");
 	pFile = m_Session.OpenURL(sUrlOrg, 1, INTERNET_FLAG_DONT_CACHE | INTERNET_FLAG_EXISTING_CONNECT | INTERNET_FLAG_TRANSFER_ASCII);
-	pFile->ReadString(buffer, 14099);
+	pFile->ReadString(buffer, 24099);
 	status = 0;
 	int lasindex = 0;
 	int pair1, pair2,odds;
@@ -574,6 +592,7 @@ void CDuoDlg::OnBnClickedButton2()
 	int a;
 	a = 0;
 	kalkylera_vinnande();
+	kalkylera_aterbetalning();
 	//m_spelbarakombinationer.Append("test");
 	//UpdateData(false);
 }
