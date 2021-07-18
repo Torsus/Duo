@@ -50,4 +50,5 @@ public:
 	double m_ater;
 	afx_msg void OnEnChangeEdit5();
 	int m_quinellaaterbetalning;
+	afx_msg void OnBnClickedButton3();
 };

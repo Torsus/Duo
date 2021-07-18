@@ -90,6 +90,7 @@ BEGIN_MESSAGE_MAP(CDuoDlg, CDialogEx)
 	ON_BN_CLICKED(IDC_BUTTON1, &CDuoDlg::OnBnClickedButton1)
 	ON_BN_CLICKED(IDC_BUTTON2, &CDuoDlg::OnBnClickedButton2)
 	ON_EN_CHANGE(IDC_EDIT5, &CDuoDlg::OnEnChangeEdit5)
+	ON_BN_CLICKED(IDC_BUTTON3, &CDuoDlg::OnBnClickedButton3)
 END_MESSAGE_MAP()
 
 
@@ -667,4 +668,21 @@ void CDuoDlg::OnEnChangeEdit5()
 	// with the ENM_CHANGE flag ORed into the mask.
 
 	// TODO:  Add your control notification handler code here
+}
+
+
+void CDuoDlg::OnBnClickedButton3()
+{
+	// TODO: Add your control notification handler code here
+	CStdioFile report;
+	char	filename[32];
+	sprintf_s(filename, "Quinella_rapport.txt");
+	if (report.Open(filename, CFile::modeWrite | CFile::modeCreate, 0))
+	{
+		report.WriteString("Komb             Odds    Kvot Spelat belopp  Beräknat spelbelopp\n");
+		report.Close();
+		char cmdstr[64];
+		sprintf_s(cmdstr, "notepad.exe  %s", filename);
+		::WinExec(cmdstr, SW_SHOWNORMAL);
+	}
 }
