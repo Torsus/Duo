@@ -48,4 +48,6 @@ public:
 	CString m_spelbarakombinationer;
 	int m_loppid;
 	double m_ater;
+	afx_msg void OnEnChangeEdit5();
+	int m_quinellaaterbetalning;
 };

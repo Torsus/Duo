@@ -66,6 +66,7 @@ CDuoDlg::CDuoDlg(CWnd* pParent /*=nullptr*/)
 	, m_spelbarakombinationer(_T(""))
 	, m_loppid(0)
 	, m_ater(0)
+	, m_quinellaaterbetalning(0)
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 }
@@ -79,6 +80,7 @@ void CDuoDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_CBString(pDX, IDC_COMBO1, m_spelbarakombinationer);
 	DDX_Text(pDX, IDC_EDIT4, m_loppid);
 	DDX_Text(pDX, IDC_EDIT5, m_ater);
+	DDX_Text(pDX, IDC_EDIT6, m_quinellaaterbetalning);
 }
 
 BEGIN_MESSAGE_MAP(CDuoDlg, CDialogEx)
@@ -87,6 +89,7 @@ BEGIN_MESSAGE_MAP(CDuoDlg, CDialogEx)
 	ON_WM_QUERYDRAGICON()
 	ON_BN_CLICKED(IDC_BUTTON1, &CDuoDlg::OnBnClickedButton1)
 	ON_BN_CLICKED(IDC_BUTTON2, &CDuoDlg::OnBnClickedButton2)
+	ON_EN_CHANGE(IDC_EDIT5, &CDuoDlg::OnEnChangeEdit5)
 END_MESSAGE_MAP()
 
 
@@ -497,6 +500,58 @@ void CDuoDlg::OnBnClickedButton2()
 	status = 0;
 	int lasindex = 0;
 	int pair1, pair2,odds;
+	int quinellaomsattning;
+	quinellaomsattning = 0;
+
+	do {
+		if ((buffer[lasindex] == 't') && (status == 0)) {
+			status = 1;
+		}
+		else if ((buffer[lasindex] == 'u') && (status == 1)) {
+			status = 2;
+		}
+		else if ((buffer[lasindex] == 'r') && (status == 2)) {
+			status = 3;
+		}
+		else if ((buffer[lasindex] == 'n') && (status == 3)) {
+			status = 4;
+		}
+		else if ((buffer[lasindex] == 'o') && (status == 4)) {
+			status = 5;
+		}
+		else if ((buffer[lasindex] == 'v') && (status == 5)) {
+			status = 6;
+		}
+		else if ((buffer[lasindex] == 'e') && (status == 6)) {
+			status = 7;
+		}
+		else if ((buffer[lasindex] == 'r') && (status == 7)) {
+			status = 8;
+		}
+		else if ((buffer[lasindex] >= '0' && (buffer[lasindex] <= '9') && status == 8))
+		{
+			status = 9;
+			quinellaomsattning = (buffer[lasindex] - 48);
+		}
+		else if ((buffer[lasindex] >= '0' && (buffer[lasindex] <= '9') && status == 9))
+		{
+			status = 9;
+			int tmp;
+			tmp = (buffer[lasindex] - 48);
+			quinellaomsattning *= 10;
+			quinellaomsattning += tmp;
+		}
+		else if ((buffer[lasindex] == ',') && (status == 9)) {
+			status = 100;
+		}
+		lasindex++;
+	} while (status < 100);
+
+	m_quinellaaterbetalning = quinellaomsattning;
+	UpdateData(false);
+
+	status = 0;
+
 	do
 	{ 
 		if ((buffer[lasindex] == 'N') && (status ==0)) {
@@ -601,4 +656,15 @@ void CDuoDlg::OnBnClickedButton2()
 void CAboutDlg::OnCbnSelchangeCombo2()
 {
 	// TODO: Add your control notification handler code here
+}
+
+
+void CDuoDlg::OnEnChangeEdit5()
+{
+	// TODO:  If this is a RICHEDIT control, the control will not
+	// send this notification unless you override the CDialogEx::OnInitDialog()
+	// function and call CRichEditCtrl().SetEventMask()
+	// with the ENM_CHANGE flag ORed into the mask.
+
+	// TODO:  Add your control notification handler code here
 }
