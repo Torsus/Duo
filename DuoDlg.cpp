@@ -429,7 +429,31 @@ void CDuoDlg::OnBnClickedButton1()
 		{
 		status = 24;
 		}
-		else if ((buffer[lasindex] == ':') && (status == 24))
+		else if ((buffer[lasindex] == 'L') && (status == 24))
+		{
+		status = 241;
+        }
+		else if ((buffer[lasindex] == 'a') && (status == 241))
+		{
+		status = 242;
+		}
+		else if ((buffer[lasindex] == 't') && (status == 242))
+		{
+		status = 243;
+		}
+		else if ((buffer[lasindex] == 'e') && (status == 243))
+		{
+		status = 244;
+		}
+		else if ((buffer[lasindex] == 's') && (status == 244))
+		{
+		status = 245;
+		}
+		else if ((buffer[lasindex] == 't') && (status == 245))
+		{
+		status = 246;
+		}
+		else if ((buffer[lasindex] == ':') && (status == 246))
 		{
 		status = 25;
 		}
