@@ -184,12 +184,20 @@ void CDuoDlg::kakylera_nominellt_odds(int a, int b)
 //	CDuoDlg::duoodds_nominella[1][2] = 17;
 	if (a != 0 && b != 0) {
 		float nom_a, nom_b, dela, delb,sum;
+	//	nom_a = 0;
+	//	nom_b = 0;
+	//	nom_a = nom_a * (1 / (float)Vinnarodds[a]);
+	//	nom_a = 1 / nom_a;
+
+	//	nom_b = nom_b * (1 / (float)Vinnarodds[b]);
+	//	nom_b = 1 / nom_b;
+
 		nom_a = 1 / (float)Vinnarodds[a];
-		nom_a /= (1/aterbetsumma);
+		nom_a *= (1/aterbetsumma);
 		nom_b = 1 / (float)Vinnarodds[b];
-		nom_b /= (1/aterbetsumma);
-		dela = nom_a * (nom_b * (1- nom_a));
-		delb = nom_b * (nom_a * (1-nom_b));
+		nom_b *= (1/aterbetsumma);
+		dela = nom_a * (nom_b / (1- nom_a));
+		delb = nom_b * (nom_a / (1-nom_b));
 		sum = dela + delb;
 		sum = 1 / sum;
 		duoodds_nominella[a][b] = sum;
@@ -286,7 +294,7 @@ void CDuoDlg::kalkylera_aterbetalning()
 	double ater;
 	ater = 0;
 	for (int a = 0; a < 20; a++) {
-		for (int b = 0; b < 20; b++) {
+		for (int b = a+1; b < 20; b++) {
 			if (duoodds_spelade[a][b] != 0) {
 				ater += 1/duoodds_spelade[a][b];
 			}
@@ -712,11 +720,22 @@ void CDuoDlg::OnBnClickedButton3()
 	CStdioFile report;
 	char	filename[32];
 	char buf[250];
+	float vinnarater = 0;
 	vinnande_kombination vkomb;
 	sprintf_s(filename, "Quinella_rapport.txt");
 	if (report.Open(filename, CFile::modeWrite | CFile::modeCreate, 0))
 	{
 		sprintf_s(buf,"Omsättning %d     Återbetalning %f\n\n", m_quinellaaterbetalning, m_ater);
+		report.WriteString(buf);
+		for (int y = 1; y < 20; y++) {
+			if (Vinnarodds[y] > 0) {
+				sprintf_s(buf, "%d  %f\n", y,Vinnarodds[y]);
+				report.WriteString(buf);
+				vinnarater += 1 / Vinnarodds[y];
+			}
+		}
+		vinnarater = 1 / vinnarater;
+		sprintf_s(buf, "Återbetalning vinnarspel: %f\n",vinnarater);
 		report.WriteString(buf);
 		report.WriteString("Komb             Odds    Kvot Spelat belopp  Beräknat spelbelopp\n");
 		for (int x = 0; x < vko.size(); x++) {
