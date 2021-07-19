@@ -56,6 +56,7 @@ public:
 		int odds;
 		float kvot;
 		int insats;
+		float for_vinst;
 	};
 	typedef vector<vinnande_kombination, allocator<vinnande_kombination> > Vinnande_kombinationer;
 	Vinnande_kombinationer vko;

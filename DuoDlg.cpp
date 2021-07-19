@@ -224,7 +224,7 @@ void CDuoDlg::kalkylera_nominella_odds()
 	}
 }
 
-#define FORVVINST(OMS,I,O,K) (((I) * (*AterBet) * (OMS) / (((*AterBet)  * (OMS) / ((O) * (K))) + (I)))  /  (O)    -   (I))
+#define FORVVINST(OMS,I,O,K) (((I) * (m_ater) * (OMS) / (((m_ater)  * (OMS) / ((O) * (K))) + (I)))  /  (O)    -   (I))
 void CDuoDlg::kalkylera_vinnande()
 {
 	char buffer[12];
@@ -260,6 +260,7 @@ void CDuoDlg::kalkylera_vinnande()
 					//beräkna insats
 					Ins = (m_ater) * 0.5 * (m_quinellaaterbetalning) / (duoodds_nominella[a][b] * vk.kvot) * (sqrt(vk.kvot) - 1);
 					vk.insats = Ins;
+					vk.for_vinst = FORVVINST(m_quinellaaterbetalning, vk.insats, vk.odds, vk.kvot);
 					vko.push_back(vk);
 					UpdateData(false);
 					tempstring = "";
@@ -738,11 +739,11 @@ void CDuoDlg::OnBnClickedButton3()
 		vinnarater = 1 / vinnarater;
 		sprintf_s(buf, "Återbetalning vinnarspel: %f\n\n",vinnarater);
 		report.WriteString(buf);
-		report.WriteString("Komb             Odds    Kvot Spelat belopp  Beräknat spelbelopp\n");
+		report.WriteString("Komb             Odds  Kvot        Spelat belopp  Förväntad vinst\n");
 		for (int x = 0; x < vko.size(); x++) {
 			vkomb = vko.at(x);
 			
-			sprintf_s(buf, "%d - %d             %d  %f    %d\n", vkomb.hast_a, vkomb.hast_b,vkomb.odds,vkomb.kvot,vkomb.insats);
+			sprintf_s(buf, "%d - %d             %d  %f    %d            %f\n", vkomb.hast_a, vkomb.hast_b,vkomb.odds,vkomb.kvot,vkomb.insats,vkomb.for_vinst);
 			report.WriteString(buf);
 		}
 		report.Close();
