@@ -716,6 +716,8 @@ void CDuoDlg::OnBnClickedButton3()
 	sprintf_s(filename, "Quinella_rapport.txt");
 	if (report.Open(filename, CFile::modeWrite | CFile::modeCreate, 0))
 	{
+		sprintf_s(buf,"Omsättning %d     Återbetalning %f\n\n", m_quinellaaterbetalning, m_ater);
+		report.WriteString(buf);
 		report.WriteString("Komb             Odds    Kvot Spelat belopp  Beräknat spelbelopp\n");
 		for (int x = 0; x < vko.size(); x++) {
 			vkomb = vko.at(x);
