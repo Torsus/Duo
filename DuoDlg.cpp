@@ -222,6 +222,7 @@ void CDuoDlg::kalkylera_vinnande()
 	CString tempstring;
 	int length;
 	int indexx = -1;
+	vinnande_kombination vk;
 	UpdateData(true);
 	CComboBox* pLC2 = (CComboBox*)GetDlgItem(IDC_COMBO2);
 	//pLC2->SetCurSel(0);
@@ -242,6 +243,11 @@ void CDuoDlg::kalkylera_vinnande()
 					m_antalspelbara++;
 					temp = 1 / (float)t1;
 					m_chans = m_chans + temp;
+					vk.hast_a = a;
+					vk.hast_b = b;
+					vk.odds = t1;
+					vk.kvot = (float)duoodds_spelade[a][b] / (float)duoodds_nominella[a][b];
+					vko.push_back(vk);
 					UpdateData(false);
 					tempstring = "";
 #pragma warning(suppress : 4996)
@@ -700,10 +706,18 @@ void CDuoDlg::OnBnClickedButton3()
 	// TODO: Add your control notification handler code here
 	CStdioFile report;
 	char	filename[32];
+	char buf[250];
+	vinnande_kombination vkomb;
 	sprintf_s(filename, "Quinella_rapport.txt");
 	if (report.Open(filename, CFile::modeWrite | CFile::modeCreate, 0))
 	{
 		report.WriteString("Komb             Odds    Kvot Spelat belopp  Beräknat spelbelopp\n");
+		for (int x = 0; x < vko.size(); x++) {
+			vkomb = vko.at(x);
+			
+			sprintf_s(buf, "%d - %d             %d  %f\n", vkomb.hast_a, vkomb.hast_b,vkomb.odds,vkomb.kvot);
+			report.WriteString(buf);
+		}
 		report.Close();
 		char cmdstr[64];
 		sprintf_s(cmdstr, "notepad.exe  %s", filename);

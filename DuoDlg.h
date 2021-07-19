@@ -3,8 +3,9 @@
 //
 
 #pragma once
-
-
+#include <iostream>
+#include <vector>
+using namespace std;
 // CDuoDlg dialog
 class CDuoDlg : public CDialogEx
 {
@@ -19,7 +20,7 @@ public:
 
 	protected:
 	virtual void DoDataExchange(CDataExchange* pDX);	// DDX/DDV support
-
+	
 
 // Implementation
 protected:
@@ -48,6 +49,15 @@ public:
 	CString m_spelbarakombinationer;
 	int m_loppid;
 	double m_ater;
+	struct vinnande_kombination
+	{
+		int hast_a;
+		int hast_b;
+		int odds;
+		float kvot;
+	};
+	typedef vector<vinnande_kombination, allocator<vinnande_kombination> > Vinnande_kombinationer;
+	Vinnande_kombinationer vko;
 	afx_msg void OnEnChangeEdit5();
 	int m_quinellaaterbetalning;
 	afx_msg void OnBnClickedButton3();
