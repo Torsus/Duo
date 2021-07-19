@@ -222,6 +222,7 @@ void CDuoDlg::kalkylera_vinnande()
 	CString tempstring;
 	int length;
 	int indexx = -1;
+	float Ins;
 	vinnande_kombination vk;
 	UpdateData(true);
 	CComboBox* pLC2 = (CComboBox*)GetDlgItem(IDC_COMBO2);
@@ -247,6 +248,9 @@ void CDuoDlg::kalkylera_vinnande()
 					vk.hast_b = b;
 					vk.odds = t1;
 					vk.kvot = (float)duoodds_spelade[a][b] / (float)duoodds_nominella[a][b];
+					//beräkna insats
+					Ins = (m_ater) * 0.5 * (m_quinellaaterbetalning) / (duoodds_nominella[a][b] * vk.kvot) * (sqrt(vk.kvot) - 1);
+					vk.insats = Ins;
 					vko.push_back(vk);
 					UpdateData(false);
 					tempstring = "";
@@ -677,8 +681,9 @@ void CDuoDlg::OnBnClickedButton2()
 	} while (status < 100);
 	int a;
 	a = 0;
-	kalkylera_vinnande();
+	//kalkylera_vinnande();
 	kalkylera_aterbetalning();
+	kalkylera_vinnande();
 	//m_spelbarakombinationer.Append("test");
 	//UpdateData(false);
 }
@@ -715,7 +720,7 @@ void CDuoDlg::OnBnClickedButton3()
 		for (int x = 0; x < vko.size(); x++) {
 			vkomb = vko.at(x);
 			
-			sprintf_s(buf, "%d - %d             %d  %f\n", vkomb.hast_a, vkomb.hast_b,vkomb.odds,vkomb.kvot);
+			sprintf_s(buf, "%d - %d             %d  %f    %d\n", vkomb.hast_a, vkomb.hast_b,vkomb.odds,vkomb.kvot,vkomb.insats);
 			report.WriteString(buf);
 		}
 		report.Close();
