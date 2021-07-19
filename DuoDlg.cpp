@@ -224,6 +224,7 @@ void CDuoDlg::kalkylera_nominella_odds()
 	}
 }
 
+#define FORVVINST(OMS,I,O,K) (((I) * (*AterBet) * (OMS) / (((*AterBet)  * (OMS) / ((O) * (K))) + (I)))  /  (O)    -   (I))
 void CDuoDlg::kalkylera_vinnande()
 {
 	char buffer[12];
@@ -735,7 +736,7 @@ void CDuoDlg::OnBnClickedButton3()
 			}
 		}
 		vinnarater = 1 / vinnarater;
-		sprintf_s(buf, "Återbetalning vinnarspel: %f\n",vinnarater);
+		sprintf_s(buf, "Återbetalning vinnarspel: %f\n\n",vinnarater);
 		report.WriteString(buf);
 		report.WriteString("Komb             Odds    Kvot Spelat belopp  Beräknat spelbelopp\n");
 		for (int x = 0; x < vko.size(); x++) {
