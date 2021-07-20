@@ -534,14 +534,14 @@ void CDuoDlg::OnBnClickedButton2()
 	char  sUrlOrg[300];
 	CInternetSession m_Session;
 	CStdioFile* pFile;
-	char buffer[25000];
+	char buffer[35000];
 	int status;
 	UpdateData(true);
 	sprintf_s(sUrlOrg, "https://api.spela.svenskaspel.se/racing/1/race/%d/quinellaodds?",m_loppid);
 
 	//sprintf_s(sUrlOrg, "https://api.spela.svenskaspel.se/racing/1/race/12163/quinellaodds?");
 	pFile = m_Session.OpenURL(sUrlOrg, 1, INTERNET_FLAG_DONT_CACHE | INTERNET_FLAG_EXISTING_CONNECT | INTERNET_FLAG_TRANSFER_ASCII);
-	pFile->ReadString(buffer, 24099);
+	pFile->ReadString(buffer, 34099);
 	status = 0;
 	int lasindex = 0;
 	int pair1, pair2,odds;
