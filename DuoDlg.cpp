@@ -723,6 +723,8 @@ void CDuoDlg::OnBnClickedButton3()
 	char	filename[32];
 	char buf[250];
 	float vinnarater = 0;
+	int totinsats = 0;
+	int totforvinst = 0;
 	vinnande_kombination vkomb;
 	sprintf_s(filename, "Quinella_rapport.txt");
 	if (report.Open(filename, CFile::modeWrite | CFile::modeCreate, 0))
@@ -745,7 +747,12 @@ void CDuoDlg::OnBnClickedButton3()
 			
 			sprintf_s(buf, "%d - %d             %d  %f    %d            %f\n", vkomb.hast_a, vkomb.hast_b,vkomb.odds,vkomb.kvot,vkomb.insats,vkomb.for_vinst);
 			report.WriteString(buf);
+			totinsats += vkomb.insats;
+			totforvinst += vkomb.for_vinst;
+
 		}
+		sprintf_s(buf, "totinsats: %d, tot förväntat vinst: %d, vinstchans: %f", totinsats, totforvinst, m_chans);
+		report.WriteString(buf);
 		report.Close();
 		char cmdstr[64];
 		sprintf_s(cmdstr, "notepad.exe  %s", filename);
