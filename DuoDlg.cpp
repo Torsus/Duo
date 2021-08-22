@@ -181,7 +181,7 @@ HCURSOR CDuoDlg::OnQueryDragIcon()
 
 void CDuoDlg::kakylera_nominellt_odds(int a, int b)
 {
-//	CDuoDlg::duoodds_nominella[1][2] = 17;
+//	CDuoDlg::duoodds_nominella[1][2] = 17;;
 	if (a != 0 && b != 0) {
 		float nom_a, nom_b, dela, delb,sum;
 	//	nom_a = 0;
